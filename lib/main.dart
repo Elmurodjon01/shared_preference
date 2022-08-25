@@ -24,7 +24,7 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
-
+Prefs prefs = Prefs();
 class _MyHomePageState extends State<MyHomePage> {
   // void showName(String name) {
   //   setState(() {
@@ -35,18 +35,9 @@ class _MyHomePageState extends State<MyHomePage> {
   // String myname = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  @override
-  void initState() {
-    emailController;
-    passwordController;
-  }
 
-  @override
-  void dispose() {
-    super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-  }
+
+
 
   Widget build(BuildContext context) {
     return Scaffold(
@@ -148,13 +139,15 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
     );
   }
-  void _doLogin (){
+  void _doLogin () {
     String email = emailController.text.toString().trim();
     String password = passwordController.text.toString().trim();
-    User user = User(email: email, password: password);
+    User user = User( email: email, password: password);
     Prefs.storeUser(user);
-    Prefs.loadUser().then((value) => {
-      print(user.email),
-    });
+    // prefs.loadUser(user).then((value) => {
+    //   print(user.email),
+    //   print(user.password),
+    // });
+    print(user.email);
   }
 }
