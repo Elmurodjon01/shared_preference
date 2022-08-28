@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preference/model/userModel.dart';
+import 'package:shared_preference/reusables.dart';
 import 'package:shared_preference/services/pref_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -24,130 +26,72 @@ class MyHomePage extends StatefulWidget {
   @override
   State<MyHomePage> createState() => _MyHomePageState();
 }
+
 Prefs prefs = Prefs();
+
 class _MyHomePageState extends State<MyHomePage> {
-  // void showName(String name) {
-  //   setState(() {
-  //     myname = name;
-  //   });
-  // }
   @override
-  // String myname = '';
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  void _doLogin() async {
+    String email = emailController.toString().trim();
+    String password = passwordController.toString().trim();
+    User user = User(email: email, password: password);
+    Prefs.storeUser(user);
+    Prefs.loadUser().then((user)  => {
+      print(user?.email),
+      print(user?.password),
 
+    });
+  }
+  bool pressed = false;
 
-
-
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('shared preferences'),
       ),
-      body: Center(
-        child: Column(
+      body: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              height: 50,
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.grey[200],
-              ),
-              child: TextField(
-                controller: emailController,
-                decoration: const InputDecoration(
-                  hintText: 'Email',
-                  border: InputBorder.none,
-                  icon: Icon(
-                    Icons.email_outlined,
-                    color: Colors.blue,
-                  ),
-                ),
+            Reusables.InputContainer('Email', emailController, Icons.person_outline),
+            const SizedBox(height: 10,),
+            Reusables.InputContainer('Password', passwordController, Icons.lock_open),
+            const SizedBox(height: 10,),
+            Padding(
+              padding: const EdgeInsets.only(right: 30),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Text('Forgot Password?')
+                ],
               ),
             ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              height: 50,
-              padding: const EdgeInsets.only(left: 15, right: 15),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.grey[200],
-              ),
-              child: TextField(
-                controller: passwordController,
-                decoration: const InputDecoration(
-                  hintText: 'Password',
-                  border: InputBorder.none,
-                  icon: Icon(
-                    Icons.lock_clock_outlined,
-                    color: Colors.blue,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              height: 10,
-            ),
-            Container(
-              margin: const EdgeInsets.only(left: 20, right: 20),
-              height: 50,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(25),
-                color: Colors.blue,
-              ),
-              child: ElevatedButton(
-                onPressed: () {
-                  _doLogin;
-                },
-                child: const Text(
-                  'Login',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ),
-
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Prefs.storeName('Elmurodjon');
-            //   },
-            //   child: const Text('Store name'),
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Prefs.loadName().then((name) => {
-            //           showName(name!),
-            //         });
-            //   },
-            //   child: const Text('Load name'),
-            // ),
-            // ElevatedButton(
-            //   onPressed: () {
-            //     Prefs.removeName();
-            //   },
-            //   child: const Text('Remove name'),
-            // ),
-            // Text('Name:' + myname),
+            const SizedBox(height: 20,),
+            //login button
+            Reusables.CustomButton('LOG IN'),
+            const SizedBox(height: 40,),
+            Text('Or connect using', style: TextStyle(color: Colors.grey, fontSize: 16),),
+            const SizedBox(height: 20,),
+            Reusables.Alternative(),
           ],
         ),
-      ),
-    );
+      );
   }
-  void _doLogin () {
-    String email = emailController.text.toString().trim();
-    String password = passwordController.text.toString().trim();
-    User user = User( email: email, password: password);
-    Prefs.storeUser(user);
-    // prefs.loadUser(user).then((value) => {
-    //   print(user.email),
-    //   print(user.password),
-    // });
-    print(user.email);
-  }
+
+  // void _doLogin() {
+  //   String email = emailController.text.toString().trim();
+  //   String password = passwordController.text.toString().trim();
+  //   User user = User.from(email: email, password: password);
+  //   Prefs.storeUser(user);
+  //   // prefs.loadUser(user).then((value) => {
+  //   //   print(user.email),
+  //   //   print(user.password),
+  //   // });
+  //   Prefs.loadUser().then((user) => {
+  //         print(user?.email),
+  //       });
+  //   print(user.email);
+  // }
 }
