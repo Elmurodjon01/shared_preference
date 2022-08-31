@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preference/reusables.dart';
 
+import '../model/userModel.dart';
+import '../services/pref_service.dart';
+
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
   static const String id = 'signUpPage';
@@ -9,16 +12,27 @@ class SignUpPage extends StatefulWidget {
   State<SignUpPage> createState() => _SignUpPageState();
 }
 
-final userNameController = TextEditingController();
-final userEmailController = TextEditingController();
-final userPhoneController = TextEditingController();
-final userPasswordController = TextEditingController();
-final userPasswordCheckController = TextEditingController();
+
 
 class _SignUpPageState extends State<SignUpPage> {
+  final userNameController = TextEditingController();
+  final userEmailController = TextEditingController();
+  final userPhoneController = TextEditingController();
+  final userPasswordController = TextEditingController();
+  final userPasswordCheckController = TextEditingController();
+  @override
+  void initState() {
+    String email = userEmailController.text.toString();
+    String name = userNameController.text.toString();
+    String phone = userPhoneController.text.toString();
+    String password = userPasswordController.text.toString();
+    String passwordCheck = userPasswordCheckController.text.toString();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: SingleChildScrollView(
           child: Padding(
@@ -48,7 +62,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 Container(
                   height: 250,
                   child: Image.network(
-                    'https://media.istockphoto.com/vectors/signup-touch-user-screen-icon-vector-id1138806878?k=20&m=1138806878&s=612x612&w=0&h=UbOmE6UQQTklMeCE9Ag43SlKpzoUNOM3XxyhDCHD7rc=',
+                    'https://img.freepik.com/free-vector/access-control-system-abstract-concept_335657-3180.jpg?w=1380&t=st=1661916730~exp=1661917330~hmac=e0ef66a08c90f1b1d85497ddaa027521feabc59f320f2163a9544e510afc91c7',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -81,7 +95,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   height: 20,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: doLogin,
                   child: Container(
                     margin: const EdgeInsets.only(left: 20, right: 20),
                     height: 55,
@@ -92,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     child: const Center(
                       child: Text(
-                        'LOG IN',
+                        'Sign Up',
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -125,5 +139,22 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
       ),
     );
+  }
+  void doLogin() async {
+    String email = userEmailController.text.toString().trim();
+    String password = userPasswordController.text.toString().trim();
+    String passwordCheck = userPasswordCheckController.text.toString().trim();
+    String name = userNameController.text.toString().trim();
+    String phone = userPhoneController.text.toString().trim();
+    User user = User(email: email, password: password, passwordCheck: passwordCheck, name: name, phone: phone);
+    Prefs.storeUser(user);
+    Prefs.loadUser().then((user) => {
+      print(user?.email),
+      print(user?.password),
+      print(user?.passwordCheck),
+      print(user?.name),
+      print(user?.phone),
+
+    });
   }
 }

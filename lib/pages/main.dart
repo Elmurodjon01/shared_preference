@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:shared_preference/model/userModel.dart';
+import 'package:shared_preference/model/loginUserModel.dart';
 import 'package:shared_preference/pages/signUp.dart';
 import 'package:shared_preference/reusables.dart';
 import 'package:shared_preference/services/pref_service.dart';
+
+import '../services/pref_login.dart';
 
 void main() {
   runApp(MyApp());
@@ -75,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.only(right: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
-                children: [Text('Forgot Password?')],
+                children: const [Text('Forgot Password?')],
               ),
             ),
             const SizedBox(
@@ -93,10 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   borderRadius: BorderRadius.circular(35),
                   color: Colors.blue[900],
                 ),
-                child: Center(
+                child: const Center(
                   child: Text(
                     'LOG IN',
-                    style: const TextStyle(
+                    style: TextStyle(
                         color: Colors.white, fontWeight: FontWeight.bold),
                   ),
                 ),
@@ -105,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const SizedBox(
               height: 40,
             ),
-            Text(
+            const Text(
               'Or connect using',
               style: TextStyle(color: Colors.grey, fontSize: 16),
             ),
@@ -131,10 +133,11 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 const Text('Don\'t have an account? '),
                 GestureDetector(
-                  onTap: (){
+                  onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SignUpPage()),
+                      MaterialPageRoute(
+                          builder: (context) => const SignUpPage()),
                     );
                   },
                   child: Text(
@@ -151,26 +154,15 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  // void _doLogin() {
-  //   String email = emailController.text.toString().trim();
-  //   String password = passwordController.text.toString().trim();
-  //   User user = User.from(email: email, password: password);
-  //   Prefs.storeUser(user);
-  //   // prefs.loadUser(user).then((value) => {
-  //   //   print(user.email),
-  //   //   print(user.password),
-  //   // });
-  //   Prefs.loadUser().then((user) => {
-  //         print(user?.email),
-  //       });
-  //   print(user.email);
-  // }
   void doLogin() async {
     String email = emailController.text.toString().trim();
     String password = passwordController.text.toString().trim();
-    User user = User(email: email, password: password);
-    Prefs.storeUser(user);
-    Prefs.loadUser().then((user) => {
+    LoginUserModel loginUserModel = LoginUserModel(
+      email: email,
+      password: password,
+    );
+    Preferences.storeLoginUser(loginUserModel);
+    Preferences.loadLoginUser().then((user) => {
           print(user?.email),
           print(user?.password),
         });
