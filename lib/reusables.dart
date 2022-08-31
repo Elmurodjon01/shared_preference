@@ -1,3 +1,5 @@
+
+
 import 'package:flutter/material.dart';
 
 
@@ -21,26 +23,19 @@ class Reusables {
  ),
  );
 }
-static Widget CustomButton(String label){
+
+
+static Widget Alternative(Color color, String label){
   return Container(
-   margin: const EdgeInsets.only(left: 20, right: 20),
-   height: 55,
-   width: 200,
+   height: 40,
+   width: 120,
    decoration: BoxDecoration(
-       borderRadius: BorderRadius.circular(35),
-       color: Colors.blue[900],
+    color: color,
+    borderRadius: BorderRadius.circular(12),
    ),
-   child: Center(
-    child: Text(label, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),),
-   ),
+   child: Center(child:  Text(label, style: const TextStyle(fontWeight: FontWeight.bold, color: Colors.white),),),
   );
 }
 
-static Widget Alternative(){
-  return Container(
-   height: 30,
-   width: 170,
-   child: Image.network('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4p-IHEBY4wJr2kSxFgjAwfguMQ9UH-RlAaIJM3FeibMOaUXoaTiRABeqT16vLaI8cwQ&usqp=CAU'),
-  );
 }
-}
+
